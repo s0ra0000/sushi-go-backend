@@ -40,8 +40,6 @@ const pool = new Pool({
 // REST API Endpoints
 // -------------------------
 
-// --- User Authentication ---
-
 app.post("/api/register", async (req, res) => {
   const { username, password } = req.body;
   try {
@@ -338,8 +336,6 @@ notificationClient.connect((err) => {
 
 notificationClient.on("notification", (msg) => {
   try {
-    // Expect the payload to be a JSON string like:
-    // {"session_id":46, "event":"countdown", "timeLeft":10}
     const payload = JSON.parse(msg.payload);
     console.log("Received notification:", payload);
 
@@ -375,7 +371,6 @@ io.on("connection", (socket) => {
     const roomName = `session_${sessionId}`;
     socket.join(roomName);
     console.log(`Socket ${socket.id} joined room ${roomName}`);
-    // Immediately fetch the current players list and send to this room
     try {
       const playersRes = await pool.query(
         "SELECT get_session_players($1, $2) as response",
