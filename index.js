@@ -19,9 +19,9 @@ const server = http.createServer(app);
 // Allow CORS and JSON bodies
 app.use(
   cors({
-    origin: "*", // You can restrict this to your frontend domain (e.g., "https://sushi.psyche.mn")
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Allow necessary methods
-    allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
+    origin: "*", // Or your frontend domain (https://sushi.psyche.mn)
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "x-token"], // Allow the x-token header
   })
 );
 app.use(express.json());
