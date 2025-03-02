@@ -237,6 +237,46 @@ app.post("/api/get-table-cards", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
+app.get("/api/scores/:sessionId", async (req, res) => {
+  const token = getToken(req);
+  const { sessionId } = req.params;
+  try {
+    const result = await pool.query(
+      "SELECT get_player_scores($1, $2) as response",
+      [token, sessionId]
+    );
+    res.json(result.rows[0].response);
+  } catch (err) {
+    console.error("Get player scores error::", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+app.get("/api/user-sessions", async (req, res) => {
+  const token = getToken(req);
+  try {
+    const result = await pool.query(
+      "SELECT get_user_sessions($1) as response",
+      [token]
+    );
+    res.json(result.rows[0].response);
+  } catch (err) {
+    console.error("Get player scores error::", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+app.get("/api/user", async (req, res) => {
+  const token = getToken(req);
+  try {
+    const result = await pool.query("SELECT get_user($1) as response", [token]);
+    res.json(result.rows[0].response);
+  } catch (err) {
+    console.error("Get player scores error::", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
 app.post("/api/is-player-belongs", async (req, res) => {
   const token = getToken(req);
   const { sessionId } = req.body;
